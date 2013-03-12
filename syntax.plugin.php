@@ -1,5 +1,5 @@
 <?php
-
+namespace Habari;
 /**
  * Syntax Highlighter
  * Version: 1.0
@@ -101,7 +101,7 @@ class Syntax extends Plugin {
 		$code = $this->trim( $match[2] );
 
 		// process the match as somewhat XML
-		$element = new SimpleXMLElement( "<code{$match[1]}></code>" );
+		$element = new \SimpleXMLElement( "<code{$match[1]}></code>" );
 		$attributes = $element->attributes();
 
 		// Make sure Syntax isn't turned off
@@ -119,16 +119,16 @@ class Syntax extends Plugin {
 		if ( ! $line ) $line = ( Options::get( 'syntax__line_numbers' ) ? 'on' : 'off' );
 
 		// Turn off error reporting
-		$er = error_reporting();
-		error_reporting(0);
+		//$er = error_reporting();
+		//error_reporting(0);
 
 		// We need to include this here...
 		// YOU CAN REMOVE THIS IF YOU HAVE GeSHi in your user/classes
 		if ( !class_exists('GeSHi') )
-			require_once ( dirname(__FILE__) . '/geshi.php' );
+			require_once ( dirname(__FILE__) . '/geshi/geshi.php' );
 
 		// Start GeSHi
-		$geshi = new GeSHi($code, $lang);
+		$geshi = new \GeSHi($code, $lang);
 
 		// we enable classes and use a stylehseet,
 		// saves output time
@@ -141,7 +141,7 @@ class Syntax extends Plugin {
 		$geshi->set_overall_style('', false);
 
 		$parsed = $geshi->parse_code();
-		error_reporting($er);
+		//error_reporting($er);
 
 		// create output
 		$output = "";
